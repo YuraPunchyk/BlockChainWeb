@@ -7,15 +7,19 @@ namespace BlockChainWeb.Models
 {
     public class Student : User
     {
-        public int Id { get; private set; }
-        public string FullName { get; private set; }
+        #region Variables
         public string Faculty { get; private set; }
         public int Course { get; private set; }
-        public List<BlockChain> Subjects { get; private set; } 
-     
-        public Student (string fullname,string faculty,int course,string login, string password, string email) :base(login, password, email)
+        public string Cathedra { get; private set; }
+        public List<BlockChain> Subjects { get; private set; }
+        #endregion
+
+        public Student (string fullname,string faculty,
+            string cathedra,
+            int course,string login, 
+            string password, string email) :base(login, password, email,fullname)
         {
-            FullName = fullname;
+            Cathedra = cathedra;
             Faculty = faculty;
             Course = course;
             Subjects = new List<BlockChain>();
