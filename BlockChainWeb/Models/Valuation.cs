@@ -9,11 +9,12 @@ namespace BlockChainWeb.Models
     {
         public Teacher Teacher { get; private set; }
         public float Amount { get; private set; }
-
+        public DateTime Date { get; private set; }
         public Valuation(Teacher teacher,float amount)
         {
             Teacher = teacher;
             Amount = amount;
+            Date = DateTime.Now;
         }
     }
 }

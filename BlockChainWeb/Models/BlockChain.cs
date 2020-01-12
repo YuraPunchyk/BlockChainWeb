@@ -7,17 +7,19 @@ namespace BlockChainWeb.Models
 {
     public class BlockChain
     {
+        public int Id { get; private set; }
+        public Subject Subject { get; private set; }
         public List<Block> Chain { set; get; }
-       
 
-        public BlockChain()
+        public BlockChain(Subject subject)
         {
-
+            InitializeChain(subject);
         }
 
 
-        public void InitializeChain()
+        public void InitializeChain(Subject subject)
         {
+            Subject = subject;
             Chain = new List<Block>();
             AddGenesisBlock();
         }
