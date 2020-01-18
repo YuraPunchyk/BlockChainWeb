@@ -7,9 +7,9 @@ namespace BlockChainWeb.Models
 {
     public class Valuation
     {
-        public Teacher Teacher { get; private set; }
-        public float Amount { get; private set; }
-        public DateTime Date { get; private set; }
+        public Teacher Teacher { get; set; }
+        public float Amount { get; set; }
+        public DateTime Date { get; set; }
         public Valuation(Teacher teacher,float amount)
         {
             Teacher = teacher;

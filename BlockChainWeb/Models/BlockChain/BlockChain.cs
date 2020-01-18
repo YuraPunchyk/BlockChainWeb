@@ -7,8 +7,8 @@ namespace BlockChainWeb.Models
 {
     public class BlockChain
     {
-        public int Id { get; private set; }
-        public Subject Subject { get; private set; }
+        public int Id{ get; set; }
+        public Subject Subject { get; set; }
         public List<Block> Chain { set; get; }
 
         public BlockChain(Subject subject)

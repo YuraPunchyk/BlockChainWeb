@@ -8,10 +8,10 @@ namespace BlockChainWeb.Models
     public class Student : User
     {
         #region Variables
-        public string Faculty { get; private set; }
-        public int Course { get; private set; }
-        public string Cathedra { get; private set; }
-        public List<BlockChain> Subjects { get; private set; }
+        public string Faculty { get; set; }
+        public int Course { get; set; }
+        public string Cathedra { get; set; }
+        public List<BlockChain> Subjects { get; set; }
         #endregion
 
         public Student (string fullname,string faculty,
