@@ -1,9 +1,10 @@
-﻿using System;
+﻿using BlockChainWeb.Models.HellperClasses;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BlockChainWeb.Models
+namespace BlockChainWeb.Models.Person
 {
     public class Teacher : User
     {
@@ -13,7 +14,7 @@ namespace BlockChainWeb.Models
         public Teacher(string fullname, string faculty,List<Subject> subjects, string cathedra, 
             string login, 
             string password, 
-            string email) : base(login, password, email, fullname)
+            string email) : base(login, password, email, fullname,Role.Teacher)
         {
             Cathedra=cathedra;
             Faculty = faculty;

@@ -1,71 +1,73 @@
-﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-for details on configuring this project to bundle and minify static web assets. */
-
-a.navbar-brand {
-  white-space: normal;
-  text-align: center;
-  word-break: break-all;
+﻿@import url('https://fonts.googleapis.com/css?family=Poppins:300i,400,600,700&display=swap'); 
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
 }
 
-/* Provide sufficient contrast against white background */
-a {
-  color: #0366d6;
+body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: #131419;
 }
 
-.btn-primary {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+.form {
+    position: relative;
+    width: 350px;
+    padding: 40px 40px 60px;
+    background: #131419;
+    text-align: center;
+    box-shadow: -5px -5px 10px rgba(255,255,255,0.05), 
+                5px 5px 15px rgba(255,255,255,0.05);
 }
 
-.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+.form h2{
+    color: #c7c7c7;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 4px;
 }
 
-/* Sticky footer styles
--------------------------------------------------- */
-html {
-  font-size: 14px;
-}
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+.form .input{
+    text-align: left;
+    margin-top: 40px;
 }
 
-.border-top {
-  border-top: 1px solid #e5e5e5;
-}
-.border-bottom {
-  border-bottom: 1px solid #e5e5e5;
+.form .input .inputBox{
+    margin-top: 20px;
 }
 
-.box-shadow {
-  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+.form .input .inputBox label {
+    display: block;
+    color: #868686;
+    margin-bottom: 5px;
+    font-size: 18px;
 }
 
-button.accept-policy {
-  font-size: 1rem;
-  line-height: inherit;
+.form .input .inputBox input {
+    width: 100%;
+    height: 50px;
+    background: #131419;
+    border: none;
+    outline: none;
+    border-radius: 40px;
+    padding: 5px 15px;
+    color: #fff;
+    font-size: 18px;
+    color: #03a9f4;
+    box-shadow: inset -2px -2px 6px rgba(255,255,255,0.05), inset 2px 2px 6px rgba(255,255,255,0.05);
 }
 
-/* Sticky footer styles
--------------------------------------------------- */
-html {
-  position: relative;
-  min-height: 100%;
+.form .input .inputBox input[type="submit"] {
+    margin-top: 20px;
+    box-shadow: -2px -2px 6px rgba(255,255,255,0.05), 2px 2px 6px rgba(255,255,255,0.05);
 }
 
-body {
-  /* Margin bottom by footer height */
-  margin-bottom: 60px;
-}
-.footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  white-space: nowrap;
-  line-height: 60px; /* Vertically center the text there */
+.form .input .inputBox input[type="submit"]:active {
+    color: #006c9c;
+    margin-top: 20px;
+    box-shadow: inset -2px -2px 6px rgba(255,255,255,0.05), inset 2px 2px 6px rgba(255,255,255,0.05);
 }

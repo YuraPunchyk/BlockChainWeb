@@ -10,8 +10,7 @@ namespace BlockChainWeb.DbContext
        }
         public static class DataBase
         {
-            public static string TeacherDataBase = "Teachers";
-            public static string StudentDataBase = "Students";
+            public static string DbName = "WebBlockChain";
         }
 
     }

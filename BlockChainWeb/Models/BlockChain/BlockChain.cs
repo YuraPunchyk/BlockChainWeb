@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MongoDB.Bson.Serialization.Attributes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -7,6 +8,7 @@ namespace BlockChainWeb.Models
 {
     public class BlockChain
     {
+        [BsonId]
         public int Id{ get; set; }
         public Subject Subject { get; set; }
         public List<Block> Chain { set; get; }
