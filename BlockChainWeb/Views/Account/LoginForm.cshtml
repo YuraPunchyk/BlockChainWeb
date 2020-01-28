@@ -2,26 +2,26 @@
 @{
     ViewData["Title"] = "Login";
 }
+<link rel="stylesheet" href="~/css/site.css" />
 
-  
-    <div class="form">
-        <h2>Login</h2>
-        <form method="post" asp-controller="Account" asp-action="Login">
-            <div class="input">
-                <div class="inputBox">
-                    <label asp-for="Login"></label>
-                    <input asp-for="Login" />
-                    <span asp-validation-for="Login"></span>
-                </div>
-
-                <div class="inputBox">
-                    <label asp-for="Password"></label>
-                    <input asp-for="Password" />
-                    <span asp-validation-for="Password"></span>
-                </div>
-                <div class="inputBox">
-                    <input type="submit" value="Sign in" />
-                </div>
+<div class="form">
+    <h2>Login</h2>
+    <form method="post" asp-controller="Account" asp-action="Login">
+        <div class="input">
+            <div class="inputBox">
+                <label asp-for="Login"></label>
+                <input asp-for="Login" />
+                <span asp-validation-for="Login"></span>
             </div>
-        </form>
-    </div>
+
+            <div class="inputBox">
+                <label asp-for="Password"></label>
+                <input asp-for="Password" />
+                <span asp-validation-for="Password"></span>
+            </div>
+            <div class="inputBox">
+                <input type="submit" value="Sign in" />
+            </div>
+        </div>
+    </form>
+</div>

@@ -8,7 +8,7 @@ namespace BlockChainWeb.Controllers
 {
     public class AdminController : Controller
     {
-        public IActionResult Index()
+        public ActionResult Admin()
         {
             return View();
         }

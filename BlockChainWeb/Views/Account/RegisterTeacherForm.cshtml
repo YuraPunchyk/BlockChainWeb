@@ -2,61 +2,64 @@
 @{
     ViewData["Title"] = "Register Teacher";
 }
+<link rel="stylesheet" href="~/css/site.css" />
 
-<h1>Register Teacher</h1>
+<div class="form">
+    <h2>Register Teacher</h2>
 
-<form method="post" asp-controller="Account" asp-action="RegisterTeacher">
+    <form method="post" asp-controller="Account" asp-action="RegisterTeacher">
+        <div class="input">
+            <div class="inputBox">
+                <label asp-for="Id"></label>
+                <input asp-for="Id" />
+                <span asp-validation-for="Id"></span>
+            </div>
 
-    <div>
-        <label asp-for="Id"></label>
-        <input asp-for="Id" />
-        <span asp-validation-for="Id"></span>
-    </div>
+            <div class="inputBox">
+                <label asp-for="Login"></label>
+                <input asp-for="Login" />
+                <span asp-validation-for="Login"></span>
+            </div>
 
-    <div>
-        <label asp-for="Login"></label>
-        <input asp-for="Login" />
-        <span asp-validation-for="Login"></span>
-    </div>
+            <div class="inputBox">
+                <label asp-for="Password"></label>
+                <input asp-for="Password" />
+                <span asp-validation-for="Password"></span>
+            </div>
 
-    <div>
-        <label asp-for="Password"></label>
-        <input asp-for="Password" />
-        <span asp-validation-for="Password"></span>
-    </div>
+            <div class="inputBox">
+                <label asp-for="ConfirmPassword"></label>
+                <input asp-for="ConfirmPassword" />
+                <span asp-validation-for="ConfirmPassword"></span>
+            </div>
 
-    <div>
-        <label asp-for="ConfirmPassword"></label>
-        <input asp-for="ConfirmPassword" />
-        <span asp-validation-for="ConfirmPassword"></span>
-    </div>
+            <div class="inputBox">
+                <label asp-for="FullName"></label>
+                <input asp-for="FullName" />
+                <span asp-validation-for="FullName"></span>
+            </div>
 
-    <div>
-        <label asp-for="FullName"></label>
-        <input asp-for="FullName" />
-        <span asp-validation-for="FullName"></span>
-    </div>
+            <div class="inputBox">
+                <label asp-for="Email"></label>
+                <input asp-for="Email" />
+                <span asp-validation-for="Email"></span>
+            </div>
 
-    <div>
-        <label asp-for="Email"></label>
-        <input asp-for="Email" />
-        <span asp-validation-for="Email"></span>
-    </div>
+            <div class="inputBox">
+                <label asp-for="Faculty"></label>
+                <input asp-for="Faculty" />
+                <span asp-validation-for="Faculty"></span>
+            </div>
 
-    <div>
-        <label asp-for="Faculty"></label>
-        <input asp-for="Faculty" />
-        <span asp-validation-for="Faculty"></span>
-    </div>
+            <div class="inputBox">
+                <label asp-for="Cathedra"></label>
+                <input asp-for="Cathedra" />
+                <span asp-validation-for="Cathedra"></span>
+            </div>
 
-    <div>
-        <label asp-for="Cathedra"></label>
-        <input asp-for="Cathedra" />
-        <span asp-validation-for="Cathedra"></span>
-    </div>
-
-    <div>
-        <input type="submit" value="RegisterTeacher" />
-    </div>
-
-</form>
+            <div class="inputBox">
+                <input type="submit" value="Register Teacher" />
+            </div>
+        </div>
+    </form>
+</div>
