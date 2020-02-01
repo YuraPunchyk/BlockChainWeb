@@ -5,7 +5,9 @@ using System.Threading.Tasks;
 using BlockChainWeb.Models;
 using BlockChainWeb.Models.Person;
 using BlockChainWeb.ViewModels;
+using BlockChainWeb.DbContexts;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 
 namespace BlockChainWeb.Controllers
 {
@@ -15,7 +17,15 @@ namespace BlockChainWeb.Controllers
         private Teacher Teacher { get; set; }
         private Student Student { get; set; }
         private Admin Admin { get; set; }
-
+        
+        private DbContext _dbContext;
+        private IHttpContextAccessor _accessor;
+        
+        public AccountController(IHttpContextAccessor accessor,AppConfiguration appConfiguration)
+        {
+            _accessor = accessor;
+            _dbContext = new DbContext(appConfiguration.Dbsetting.Connection);
+        }
         public ActionResult LoginForm() {
             return View();
         }
@@ -29,8 +39,15 @@ namespace BlockChainWeb.Controllers
         }
 
         [HttpPost]
-        public ActionResult Login(LoginViewModel loginViewModel) {
-            return RedirectToAction("Admin", "Admin");
+        public void Login(LoginViewModel loginViewModel) {
+            var user = _dbContext.Authentication(loginViewModel.Id, loginViewModel.Password);
+            if(user!=null)
+            {
+                if(user.IsStudent)
+                {
+                    var student = _dbContext.GetStudentById(user.Id);
+                }
+            }
         }
 
         [HttpPost]

@@ -14,9 +14,6 @@ namespace BlockChainWeb.ViewModels
         [Required, MaxLength(200)]
         public string FullName { get; set; }
 
-        [Required, MaxLength(100)]
-        public string Login { get; set; }
-
         [Required, DataType(DataType.Password)]
         public string Password { get; set; }
 

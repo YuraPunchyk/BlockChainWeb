@@ -1,8 +1,10 @@
 using System.IO;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 
 namespace BlockChainWeb
@@ -24,6 +26,8 @@ namespace BlockChainWeb
                 .AddJsonFile("appsettings.json", optional: true);
             configBuilder.Build().Bind(appConfig);
             services.AddSingleton<AppConfiguration>(appConfig);
+            services.AddHttpContextAccessor();
+            services.TryAddSingleton<IActionContextAccessor, ActionContextAccessor>();
             services.AddControllersWithViews();
         }
 
@@ -49,7 +53,7 @@ namespace BlockChainWeb
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Account}/{action=LoginForm}/{id?}");
+                    pattern: "{controller=Account}/{action=idForm}/{id?}");
             });
         }
     }

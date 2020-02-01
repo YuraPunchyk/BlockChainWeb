@@ -1,5 +1,5 @@
 ﻿
-namespace BlockChainWeb.DbContext
+namespace BlockChainWeb.DbContexts
 {
     public static class EnumName
     {
@@ -7,6 +7,7 @@ namespace BlockChainWeb.DbContext
        {
             public static string TeacherCollection = "Teacher";
             public static string StudentCollection = "Student";
+            public static string LoginsCollection = "Logins";
        }
         public static class DataBase
         {

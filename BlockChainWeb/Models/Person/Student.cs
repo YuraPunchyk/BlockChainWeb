@@ -12,18 +12,19 @@ namespace BlockChainWeb.Models.Person
         public string Faculty { get; set; }
         public int Course { get; set; }
         public string Cathedra { get; set; }
+        public int Group { get; set; }
         public List<BlockChain> Subjects { get; set; }
         #endregion
 
         public Student (string fullname,string faculty,
             string cathedra,
-            int course,string login, 
-            string password, string email) :base(login, password, email,fullname,Role.Student)
+            int course,int group,string id, string email,List<BlockChain> subject) :base(id, email,fullname,Role.Student)
         {
             Cathedra = cathedra;
             Faculty = faculty;
             Course = course;
-            Subjects = new List<BlockChain>();
+            Group = group;
+            Subjects = subject;
         }
     }
 }

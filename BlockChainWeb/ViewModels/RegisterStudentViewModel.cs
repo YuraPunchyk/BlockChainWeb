@@ -13,9 +13,6 @@ namespace BlockChainWeb.ViewModels
         [Required, MaxLength(200)]
         public string FullName { get; set; }
 
-        [Required, MaxLength(100)]
-        public string Login { get; set; }
-
         [Required, DataType(DataType.Password)]
         public string Password { get; set; }
 
@@ -30,6 +27,8 @@ namespace BlockChainWeb.ViewModels
 
         [RegularExpression(@"[1-6]{1}",ErrorMessage ="Course is not correct")]
         public int Course { get; set; }
+        [RegularExpression(@"[1-6][0-9][1-9]", ErrorMessage = "Group is not correct")]
+        public int Group { get; set; }
 
         [Required, MaxLength(200)]
         public string Cathedra { get; set; }

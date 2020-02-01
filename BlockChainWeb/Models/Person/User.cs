@@ -9,18 +9,16 @@ namespace BlockChainWeb.Models.Person
     public class User
     {
         [BsonId]
-        public int Id { get; set; }
+        public string Id { get; set; }
         public string FullName { get; set; }
-        public string  Login { get; set; }
-        public string  Password { get; set; }
         public string  Email { get; set; }
         public string UserRole { get; set;}
+       
 
-        public User(string login, string password, string email,string fullname,string userRole)
+        public User(string id, string email,string fullname,string userRole)
         {
             FullName = fullname;
-            Login = login;
-            Password = password;
+            Id = id;
             Email = email;
             UserRole = userRole;
         }
