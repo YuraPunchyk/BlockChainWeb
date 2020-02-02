@@ -1,0 +1,27 @@
+﻿@model Student
+@{
+    ViewData["Title"] = "Student";
+}
+
+
+<div class="navbar-nav">
+    <div class=" nav-item">
+        <select class="student_select" id="subject">
+            @foreach (var subject in Model.Subjects)
+            {
+                <option id="@subject.Subject.Name">@subject.Subject.Name</option>
+            }
+        </select>
+    </div>
+    <div class=" nav-item">
+        <button class="student_button" value="Show" onclick="Show();"/>   
+    </div>
+</div>
+
+<div class="tab-content">
+ <script type="text/javascript">
+     function Show() {
+         alert(@Model.FullName);
+     }
+ </script>
+</div>
