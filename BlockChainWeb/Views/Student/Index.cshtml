@@ -9,19 +9,42 @@
         <select class="student_select" id="subject">
             @foreach (var subject in Model.Subjects)
             {
-                <option id="@subject.Subject.Name">@subject.Subject.Name</option>
+                <option id="@subject.Subject.Id">@subject.Subject.Name</option>
             }
         </select>
     </div>
     <div class=" nav-item">
-        <button class="student_button" value="Show" onclick="Show();"/>   
+        <button class="student_button" value="Show" onclick="Show();" />
+    </div>
+    <div class="show" id="show">
+        <div id="student-model-show">
+
+        </div>
     </div>
 </div>
 
 <div class="tab-content">
- <script type="text/javascript">
-     function Show() {
-         alert(@Model.FullName);
-     }
- </script>
+
+    <script type="text/javascript">
+        var show = document.getElementById("show");
+        var table = document.getElementById("student-model-show");
+        var subjects = @Model.Subjects;
+    </script>
+    <script type="text/javascript">
+        function Show() {
+            var select = document.getElementById("subject");
+            var nameSubject = select.options[select.selectedIndex].value;
+            for (var model in @Model.Subjects) {
+                if (model.Subject.Name == nameSubject) {
+                    show.innerHTML("<h1 class='subject-name'>" + nameSubject + "</h1>");
+                    var strHtml = "<table class='show-subject'>";
+                    strHtml += "<tr><th>Index</th><th>PerviousHash</th><th>Hash</th><th>Date</th><th>Amount</th><th>Description</th><th>Teacher</th></tr>";
+                    for (var value in model.Chain) {
+                        strHtml += "<tr><th>" + value.Index + "</th><th>" + value.PerviousHash + "</th><th>" + value.Hash + "</th><th>" + value.Date + "</th><th>" + value.Valuation.Amount + "</th><th>" + value.Valuation.Description + "</th><th>" + value.Valuation.Teacher.FullName + "</th></tr>";
+                    }
+                    strHtml += "</table>";
+                }
+            }
+        }
+    </script>
 </div>
