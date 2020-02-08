@@ -7,8 +7,7 @@
 <div class="navbar-nav">
     <div class=" nav-item">
         <select class="student_select" id="subject">
-            @foreach (var subject in Model.Subjects)
-            {
+            @foreach(var subject in Model.Subjects) {
                 <option id="@subject.Subject.Id">@subject.Subject.Name</option>
             }
         </select>
