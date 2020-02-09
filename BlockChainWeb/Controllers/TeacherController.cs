@@ -18,7 +18,7 @@ namespace BlockChainWeb.Controllers {
 			_context = accessor.ActionContext.HttpContext;
 			_dbContext = new DbContext(appConfiguration.Dbsetting.Connection);
 		}
-		public IActionResult Index (Login login) {
+		public IActionResult Index () {
 			return View();
 		}
 	}

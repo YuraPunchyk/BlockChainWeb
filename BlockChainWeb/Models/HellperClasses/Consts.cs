@@ -8,6 +8,7 @@ namespace BlockChainWeb.Models.HellperClasses {
 		#region CookieConst
 		public static string ConstCookieUser = "userCookie";
 		public static string ConstCookieIpAddress = "ipAdressCookie";
+		public static string ConstCookieStatus = "statusCookie";
 		#endregion
 	}
 }

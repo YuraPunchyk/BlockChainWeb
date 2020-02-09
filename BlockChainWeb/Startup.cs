@@ -1,4 +1,5 @@
 using System.IO;
+using BlockChainWeb.Middelwares;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
@@ -25,7 +26,6 @@ namespace BlockChainWeb {
 			services.AddHttpContextAccessor();
 			services.TryAddSingleton<IActionContextAccessor, ActionContextAccessor>();
 			services.AddControllersWithViews();
-
 		}
 
 		public void Configure ( IApplicationBuilder app, IWebHostEnvironment env ) {
@@ -37,9 +37,9 @@ namespace BlockChainWeb {
 			}
 			app.UseHttpsRedirection();
 			app.UseStaticFiles();
-
+			app.UseMiddleware<WorkerMiddelware>();
 			app.UseRouting();
-
+		
 			app.UseAuthorization();
 			app.UseEndpoints(endpoints => {
 				endpoints.MapControllerRoute(
