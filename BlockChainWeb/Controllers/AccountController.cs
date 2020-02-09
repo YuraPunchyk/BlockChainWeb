@@ -1,22 +1,21 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using BlockChainWeb.Models;
 using BlockChainWeb.Models.Person;
 using BlockChainWeb.ViewModels;
 using BlockChainWeb.DbContexts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
+using BlockChainWeb.Models.HellperClasses;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 
 namespace BlockChainWeb.Controllers {
 	public class AccountController : Controller {
 		private DbContext _dbContext;
 		private HttpContext _context;
 
-		public AccountController ( AppConfiguration appConfiguration, HttpContext context ) {
+		public AccountController ( AppConfiguration appConfiguration, IActionContextAccessor context ) {
 			_dbContext = new DbContext(appConfiguration.Dbsetting.Connection);
-			_context = context;
+			_context = context.ActionContext.HttpContext;
 		}
 		[Route("/Account/LoginForm")]
 		public ActionResult LoginForm () {
@@ -24,7 +23,30 @@ namespace BlockChainWeb.Controllers {
 		}
 
 		public ActionResult Authentication () {
-			return View();
+			string userId = _context.Request.Cookies[Consts.ConstCookieUser];
+			string userIpAdress = _context.Request.Cookies[Consts.ConstCookieIpAddress];
+			_context.Response.Cookies.Append(Consts.ConstCookieIpAddress, _context.Connection.RemoteIpAddress.ToString());
+			
+			if(!string.IsNullOrWhiteSpace(userIpAdress)) {
+				if(!string.IsNullOrWhiteSpace(userId)) {
+					Login login = _dbContext.GetLoginById(userId);
+					if(login!=null) {
+						if(login.IsAdmin) {
+							return View("../Admin/Index", login);
+						} else {
+							if(login.IsStudent) {
+								return View("../Student/Index", login);
+							} else {
+								if(login.IsTeacher) {
+									return View("../Teacher/Index", login);
+								}
+							}
+						}
+					}
+				}
+			}
+
+			return View("LoginForm");
 		}
 
 		public ActionResult RegisterStudentForm () {
@@ -36,13 +58,24 @@ namespace BlockChainWeb.Controllers {
 		}
 
 		[HttpPost]
-		public void Login ( LoginViewModel loginViewModel ) {
+		public ActionResult Login ( LoginViewModel loginViewModel ) {
 			var user = _dbContext.Authentication(loginViewModel.Id, loginViewModel.Password);
 			if(user != null) {
-				if(user.IsStudent) {
-					var student = _dbContext.GetStudentById(user.Id);
+				if(user.IsAdmin) {
+					_context.Response.Cookies.Append(Consts.ConstCookieUser, user.Id);
+					return View("../Admin/Index", user);
+				} else {
+					if(user.IsStudent) {
+						_context.Response.Cookies.Append(Consts.ConstCookieUser, user.Id);
+						return View("../Student/Index", user);
+					} else {
+						if(user.IsTeacher) {
+							return View("../Teacher/Index", user);
+						}
+					}
 				}
 			}
+			return View("NotRegister");
 		}
 
 		[HttpPost]

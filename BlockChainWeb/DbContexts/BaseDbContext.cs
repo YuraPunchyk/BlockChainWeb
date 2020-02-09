@@ -51,6 +51,11 @@ namespace BlockChainWeb.DbContexts {
 			collection.InsertOne(login);
 		}
 
+		public void SetGroup (int group) {
+			var database = _client.GetDatabase(EnumName.DataBase.DbName);
+			var collection = database.GetCollection<int>(EnumName.Collection.GroupCollection);
+			collection.InsertOne(group);
+		}
 
 		public List<Student> GetStudentsByGroup ( int group ) {
 			FilterDefinition<Student> filter = Builders<Student>.Filter.Eq(x => x.Group, group);
@@ -101,6 +106,14 @@ namespace BlockChainWeb.DbContexts {
 					teacher[0].Id, teacher[0].Email);
 			}
 			return null;
+		}
+
+		public List<int> GetGroups () {
+			FilterDefinition<int> filter = Builders<int>.Filter.Empty;
+			var database = _client.GetDatabase(EnumName.DataBase.DbName);
+			var collection = database.GetCollection<int>(EnumName.Collection.GroupCollection);
+			List<int> groups = collection.Find(filter).ToList();
+			return groups;
 		}
 	}
 }

@@ -44,7 +44,7 @@ namespace BlockChainWeb {
 			app.UseEndpoints(endpoints => {
 				endpoints.MapControllerRoute(
 					name: "default",
-					pattern: "{controller=Account}/{action=LoginForm}/{id?}");
+					pattern: "{controller=Account}/{action=Authentication}/{id?}");
 			});
 		}
 	}

@@ -71,3 +71,7 @@ body{
     margin-top: 20px;
     box-shadow: inset -2px -2px 6px rgba(255,255,255,0.05), inset 2px 2px 6px rgba(255,255,255,0.05);
 }
+
+.not-registered {
+    color: #c7c7c7;
+}

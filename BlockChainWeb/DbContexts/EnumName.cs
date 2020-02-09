@@ -5,6 +5,7 @@ namespace BlockChainWeb.DbContexts {
 			public static string TeacherCollection = "Teacher";
 			public static string StudentCollection = "Student";
 			public static string LoginsCollection = "Logins";
+			public static string GroupCollection = "Groups";
 		}
 		public static class DataBase {
 			public static string DbName = "WebBlockChain";
