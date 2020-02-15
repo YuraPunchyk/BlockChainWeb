@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using BlockChainWeb.Models.HellperClasses;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using System.Collections.Generic;
+using BlockChainWeb.Models;
 
 namespace BlockChainWeb.Controllers {
 	public class AccountController : Controller {
@@ -60,7 +61,9 @@ namespace BlockChainWeb.Controllers {
 		}
 
 		public IActionResult RegisterTeacherForm () {
-			return View();
+			RegisterTeacherViewModel model = new RegisterTeacherViewModel();
+			model.Subjects = _dbContext.GetSubjects();
+			return View(model);
 		}
 
 		[HttpPost]
@@ -89,12 +92,17 @@ namespace BlockChainWeb.Controllers {
 		}
 
 		[HttpPost]
-		public IActionResult RegisterTeacher ( RegisterTeacherViewModel registerTeacherViewModel ) {
+		public IActionResult RegisterTeacher ( RegisterTeacherViewModel model ) {
+			Teacher teacher = new Teacher(model.FullName,model.Faculty,model.Subjects,model.Cathedra,model.Id,model.Email);
+			_dbContext.SetTeacher(teacher);
 			return RedirectToAction("Admin", "Admin");
 		}
 
 		[HttpPost]
-		public IActionResult RegisterStudent ( RegisterStudentViewModel registerStudentViewModel ) {
+		public IActionResult RegisterStudent ( RegisterStudentViewModel model ) {
+			List<BlockChain> subjects = new List<BlockChain>();
+			Student student = new Student(model.FullName, model.Faculty, model.Cathedra, model.Course, model.Group, model.Id, model.Email, subjects);
+			_dbContext.SetStudent(student);
 			return RedirectToAction("Admin", "Admin");
 		}
 

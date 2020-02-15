@@ -51,6 +51,15 @@
             </div>
 
             <div class="inputBox">
+                <label asp-for="Subjects"></label>
+                <select asp-for="Subjects">
+                    @foreach(var item in Model.Subjects) {
+                        <option>@item</option>
+                    }
+                </select>
+            </div>
+
+            <div class="inputBox">
                 <input type="submit" value="Register Teacher" />
             </div>
         </div>

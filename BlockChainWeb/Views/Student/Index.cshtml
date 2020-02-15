@@ -8,7 +8,7 @@
     <div class=" nav-item">
         <select class="student_select" id="subject">
             @foreach(var subject in Model.Subjects) {
-                <option id="@subject.Subject.Id">@subject.Subject.Name</option>
+                <option id="@subject.Subject">@subject.Subject</option>
             }
         </select>
     </div>
@@ -31,19 +31,22 @@
     </script>
     <script type="text/javascript">
         function Show() {
+            show.innerHTML = "";
             var select = document.getElementById("subject");
             var nameSubject = select.options[select.selectedIndex].value;
+            var strHtml = "<h1 class='subject-name'>" + nameSubject + "</h1>";
+            strHtml = "<table class='show-subject'>";
+            strHtml += "<tr><th>Index</th><th>PerviousHash</th><th>Hash</th><th>Date</th><th>Amount</th><th>Description</th><th>Teacher</th></tr>";
             for (var model in @Model.Subjects) {
-                if (model.Subject.Name == nameSubject) {
-                    show.innerHTML("<h1 class='subject-name'>" + nameSubject + "</h1>");
-                    var strHtml = "<table class='show-subject'>";
-                    strHtml += "<tr><th>Index</th><th>PerviousHash</th><th>Hash</th><th>Date</th><th>Amount</th><th>Description</th><th>Teacher</th></tr>";
+                if (model.Subject == nameSubject) {
                     for (var value in model.Chain) {
                         strHtml += "<tr><th>" + value.Index + "</th><th>" + value.PerviousHash + "</th><th>" + value.Hash + "</th><th>" + value.Date + "</th><th>" + value.Valuation.Amount + "</th><th>" + value.Valuation.Description + "</th><th>" + value.Valuation.Teacher.FullName + "</th></tr>";
                     }
                     strHtml += "</table>";
                 }
             }
+            show.innerHTML = strHtml;
         }
+        
     </script>
 </div>

@@ -8,15 +8,15 @@ namespace BlockChainWeb.Models {
 	public class BlockChain {
 		[BsonId]
 		public int Id { get; set; }
-		public Subject Subject { get; set; }
+		public string Subject { get; set; }
 		public List<Block> Chain { set; get; }
 
-		public BlockChain ( Subject subject ) {
+		public BlockChain ( string subject ) {
 			InitializeChain(subject);
 		}
 
 
-		public void InitializeChain ( Subject subject ) {
+		public void InitializeChain ( string subject ) {
 			Subject = subject;
 			Chain = new List<Block>();
 			AddGenesisBlock();

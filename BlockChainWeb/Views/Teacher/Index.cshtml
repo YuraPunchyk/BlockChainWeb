@@ -5,3 +5,30 @@
 
 <h1>Teacher</h1>
 
+<div class="form ">
+    <form method="post" asp-controller="Teacher" asp-action="SetValuation">
+        
+        <div class="inputBox">
+            <label asp-for="Subject"></label>
+            <select asp-for="Subject">
+                @foreach(var item in Model.Teacher.Subjects) {
+                    <option>@item</option>
+                }
+            </select>
+        </div>
+
+        <div class="inputBox">
+            <label asp-for="Group"></label>
+            <select asp-for="Group">
+                @foreach(var item in Model.Groups) {
+                    <option>@item</option>
+                }
+            </select>
+        </div>
+
+        <div class="inputBox">
+            <input type="submit" value="Set valuation"/>
+        </div>
+
+    </form>
+</div>

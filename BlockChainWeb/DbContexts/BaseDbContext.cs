@@ -115,5 +115,33 @@ namespace BlockChainWeb.DbContexts {
 			List<int> groups = collection.Find(filter).ToList();
 			return groups;
 		}
+
+		public void SetStudent(Student student ) {
+			var databasse = _client.GetDatabase(EnumName.DataBase.DbName);
+			var collection = databasse.GetCollection<Student>(EnumName.Collection.StudentCollection);
+			collection.InsertOne(student);
+		}
+
+		public void SetTeacher(Teacher teacher ) {
+			var databasse = _client.GetDatabase(EnumName.DataBase.DbName);
+			var collection = databasse.GetCollection<Teacher>(EnumName.Collection.TeacherCollection);
+			collection.InsertOne(teacher);
+		}
+
+		public void UpdateStudent (Student student) {
+			var filter = Builders<Student>.Filter.Eq(x => x.Id, student.Id);
+			var database = _client.GetDatabase(EnumName.DataBase.DbName);
+			var collection = database.GetCollection<Student>(EnumName.Collection.StudentCollection);
+			var data = Builders<Student>.Update.Set(x => x, student);
+			collection.UpdateOne(filter, data);
+		}
+
+		public List<string> GetSubjects () {
+			FilterDefinition<string> filter = Builders<string>.Filter.Empty;
+			var database = _client.GetDatabase(EnumName.DataBase.DbName);
+			var collection = database.GetCollection<string>(EnumName.Collection.SubjectCollection);
+			List<string> subjects = collection.Find(filter).ToList();
+			return subjects;
+		}
 	}
 }
