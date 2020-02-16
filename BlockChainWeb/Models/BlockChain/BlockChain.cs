@@ -6,10 +6,13 @@ using System.Threading.Tasks;
 
 namespace BlockChainWeb.Models {
 	public class BlockChain {
+
+		#region Variables
 		[BsonId]
 		public int Id { get; set; }
 		public string Subject { get; set; }
 		public List<Block> Chain { set; get; }
+		#endregion
 
 		public BlockChain ( string subject ) {
 			InitializeChain(subject);
@@ -65,7 +68,6 @@ namespace BlockChainWeb.Models {
 			foreach(Block block in Chain) {
 				valuation += block.Valuation.Amount;
 			}
-
 
 			return valuation;
 		}

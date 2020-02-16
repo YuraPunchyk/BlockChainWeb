@@ -1,5 +1,4 @@
 ﻿using BlockChainWeb.Models.HellperClasses;
-using Microsoft.AspNetCore.Hosting.Server;
 using Microsoft.AspNetCore.Http;
 
 using System.Threading.Tasks;
@@ -8,12 +7,16 @@ namespace BlockChainWeb.Middelwares {
 	public class WorkerMiddelware {
 		private readonly RequestDelegate _next;
 
+		#region Private Veriables
 		private const string teacher = "Teacher";
 		private const string student = "Student";
 		private const string admin = "Admin";
+		#endregion
+
 		public WorkerMiddelware ( RequestDelegate next ) {
 			_next = next;
 		}
+
 		public async Task InvokeAsync ( HttpContext context ) {
 			var status = context.Request.Cookies[Consts.ConstCookieStatus];
 			var url = context.Request.Path.ToString();

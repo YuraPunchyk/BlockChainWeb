@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using BlockChainWeb.Models.Person;
+﻿using BlockChainWeb.Models.Person;
 using BlockChainWeb.ViewModels;
 using BlockChainWeb.DbContexts;
 using Microsoft.AspNetCore.Mvc;
@@ -12,10 +10,12 @@ using BlockChainWeb.Models;
 
 namespace BlockChainWeb.Controllers {
 	public class AccountController : Controller {
+		#region Private Veriables
 		private DbContext _dbContext;
 		private HttpContext _context;
 		private IActionContextAccessor _accessor;
 		private AppConfiguration _appConfiguration;
+		#endregion
 
 		public AccountController ( AppConfiguration appConfiguration, IActionContextAccessor accessor ) {
 			_dbContext = new DbContext(appConfiguration.Dbsetting.Connection);
@@ -130,13 +130,12 @@ namespace BlockChainWeb.Controllers {
 		public WebModel GetTeacherModel ( string id ) {
 			Teacher teacher = _dbContext.GetTeacherById(id);
 			List<int> groups = _dbContext.GetGroups();
-			List<string> subjects = _dbContext.GetSubjects();
-			if(teacher != null && groups.Count > 0 && subjects.Count > 0) {
+			if(teacher != null && groups.Count > 0) {
 				return new WebModel {
 					Id = teacher.Id,
 					Role = Role.Teacher,
 					Groups = groups,
-					Subjects = subjects
+					Subjects = teacher.Subjects
 				};
 			}
 			return null;

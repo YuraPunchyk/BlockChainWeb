@@ -1,7 +1,4 @@
-﻿using BlockChainWeb.Models;
-using BlockChainWeb.Models.Person;
-using MongoDB.Driver;
-using System.Collections.Generic;
+﻿using BlockChainWeb.Models.Person;
 
 namespace BlockChainWeb.DbContexts {
 	public class DbContext : BaseDbContext {
@@ -17,7 +14,5 @@ namespace BlockChainWeb.DbContexts {
 			}
 			return null;
 		}
-
-
 	}
 }

@@ -7,11 +7,11 @@
 
 <div class="form ">
     <form method="post" asp-controller="Teacher" asp-action="SetValuation">
-        
+
         <div class="inputBox">
             <label asp-for="Subject"></label>
             <select asp-for="Subject">
-                @foreach(var item in Model.Teacher.Subjects) {
+                @foreach(var item in Model.Subjects) {
                     <option>@item</option>
                 }
             </select>
@@ -27,8 +27,12 @@
         </div>
 
         <div class="inputBox">
-            <input type="submit" value="Set valuation"/>
+            <input type="submit" value="Set valuation" />
         </div>
 
     </form>
 </div>
+<input asp-for="Id" value="@Model.Id" hidden />
+<input asp-for="Role" value="@Model.Role" hidden>
+<input asp-for="Subjects" value="@Model.Subjects" hidden>
+<input asp-for="Groups" value="@Model.Groups" hidden>

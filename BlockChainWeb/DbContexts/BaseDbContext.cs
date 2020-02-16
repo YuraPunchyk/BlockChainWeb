@@ -1,14 +1,16 @@
 ﻿using BlockChainWeb.Models.Person;
-using MongoDB.Bson;
 using MongoDB.Driver;
-using NHibernate.Engine;
 using System;
 using System.Collections.Generic;
 
 namespace BlockChainWeb.DbContexts {
 	public class BaseDbContext {
-		public string ConnectionString { get; set; }
+
+		#region Private Veriables
+		private string ConnectionString;
 		private IMongoClient _client = null;
+		#endregion
+
 		public BaseDbContext ( string connectionString ) {
 			ConnectionString = connectionString;
 			_client = GetConnection();
@@ -51,7 +53,7 @@ namespace BlockChainWeb.DbContexts {
 			collection.InsertOne(login);
 		}
 
-		public void SetGroup (int group) {
+		public void SetGroup ( int group ) {
 			var database = _client.GetDatabase(EnumName.DataBase.DbName);
 			var collection = database.GetCollection<int>(EnumName.Collection.GroupCollection);
 			collection.InsertOne(group);
@@ -116,19 +118,19 @@ namespace BlockChainWeb.DbContexts {
 			return groups;
 		}
 
-		public void SetStudent(Student student ) {
+		public void SetStudent ( Student student ) {
 			var databasse = _client.GetDatabase(EnumName.DataBase.DbName);
 			var collection = databasse.GetCollection<Student>(EnumName.Collection.StudentCollection);
 			collection.InsertOne(student);
 		}
 
-		public void SetTeacher(Teacher teacher ) {
+		public void SetTeacher ( Teacher teacher ) {
 			var databasse = _client.GetDatabase(EnumName.DataBase.DbName);
 			var collection = databasse.GetCollection<Teacher>(EnumName.Collection.TeacherCollection);
 			collection.InsertOne(teacher);
 		}
 
-		public void UpdateStudent (Student student) {
+		public void UpdateStudent ( Student student ) {
 			var filter = Builders<Student>.Filter.Eq(x => x.Id, student.Id);
 			var database = _client.GetDatabase(EnumName.DataBase.DbName);
 			var collection = database.GetCollection<Student>(EnumName.Collection.StudentCollection);

@@ -1,9 +1,5 @@
 ﻿using BlockChainWeb.Models.HellperClasses;
-using MongoDB.Bson.Serialization.Attributes;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace BlockChainWeb.Models.Person {
 	public class Teacher : User {
@@ -12,8 +8,6 @@ namespace BlockChainWeb.Models.Person {
 		public string Cathedra { get; set; }
 		public List<string> Subjects { get; set; }
 		#endregion
-		[BsonIgnore]
-		public List<int> Groups { get; set; }// only for coding
 
 		public Teacher ( string fullname, string faculty, List<string> subjects, string cathedra,
 			string id,
