@@ -42,10 +42,19 @@ namespace BlockChainWeb.Controllers {
 						} else {
 							if(login.IsStudent) {
 								var student = _dbContext.GetStudentById(login.Id);
-								return View("../Student/Index", student);
+								if(student != null) {
+									return View("../Student/Index", student);
+								} else {
+									return BadRequest();
+								}
 							} else {
 								if(login.IsTeacher) {
-									return View("../Teacher/Index", GetTeacherViews(login.Id));
+									WebModel model = GetTeacherModel(login.Id);
+									if(model != null) {
+										return View("../Teacher/Index", model);
+									} else {
+										return BadRequest();
+									}
 								}
 							}
 						}
@@ -78,12 +87,23 @@ namespace BlockChainWeb.Controllers {
 					if(user.IsStudent) {
 						_context.Response.Cookies.Append(Consts.ConstCookieStatus, "2");
 						_context.Response.Cookies.Append(Consts.ConstCookieUser, user.Id);
-						return View("../Student/Index", _dbContext.GetStudentById(user.Id));
+						var student = _dbContext.GetStudentById(user.Id);
+						if(student != null) {
+							return View("../Student/Index", student);
+						} else {
+							return BadRequest();
+						}
 					} else {
 						if(user.IsTeacher) {
 							_context.Response.Cookies.Append(Consts.ConstCookieStatus, "2");
 							_context.Response.Cookies.Append(Consts.ConstCookieUser, user.Id);
-							return View("../Teacher/Index", GetTeacherViews(user.Id));
+							WebModel model = GetTeacherModel(user.Id);
+							if(model != null) {
+								return View("../Teacher/Index", model);
+							} else {
+								return BadRequest();
+							}
+
 						}
 					}
 				}
@@ -93,7 +113,7 @@ namespace BlockChainWeb.Controllers {
 
 		[HttpPost]
 		public IActionResult RegisterTeacher ( RegisterTeacherViewModel model ) {
-			Teacher teacher = new Teacher(model.FullName,model.Faculty,model.Subjects,model.Cathedra,model.Id,model.Email);
+			Teacher teacher = new Teacher(model.FullName, model.Faculty, model.Subjects, model.Cathedra, model.Id, model.Email);
 			_dbContext.SetTeacher(teacher);
 			return RedirectToAction("Admin", "Admin");
 		}
@@ -107,13 +127,19 @@ namespace BlockChainWeb.Controllers {
 		}
 
 		#region Helper Methods
-		public TeacherViews GetTeacherViews ( string id ) {
+		public WebModel GetTeacherModel ( string id ) {
 			Teacher teacher = _dbContext.GetTeacherById(id);
 			List<int> groups = _dbContext.GetGroups();
-			return new TeacherViews {
-				Teacher = teacher,
-				Groups = groups
-			};
+			List<string> subjects = _dbContext.GetSubjects();
+			if(teacher != null && groups.Count > 0 && subjects.Count > 0) {
+				return new WebModel {
+					Id = teacher.Id,
+					Role = Role.Teacher,
+					Groups = groups,
+					Subjects = subjects
+				};
+			}
+			return null;
 		}
 		#endregion
 	}
