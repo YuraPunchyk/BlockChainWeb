@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using BlockChainWeb.Models.Person;
+﻿using BlockChainWeb.Models.Person;
 
 namespace BlockChainWeb.Models {
 	public class Valuation {

@@ -1,5 +1,7 @@
 ﻿using BlockChainWeb.DbContexts;
+using BlockChainWeb.Models;
 using BlockChainWeb.Models.HellperClasses;
+using BlockChainWeb.Models.Person;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
@@ -16,15 +18,18 @@ namespace BlockChainWeb.Controllers {
 			_context = accessor.ActionContext.HttpContext;
 		}
 
-		public IActionResult Index () {
-			return View();
+		public IActionResult Index ( WebModel model ) {
+			Student student = _dbContext.GetStudentById(model.Id);
+			model.Student = student;
+			return View(model);
 		}
 
-		public IActionResult Logout () {
-			_context.Response.Cookies.Append(Consts.ConstCookieUser, "");
-			_context.Response.Cookies.Append(Consts.ConstCookieIpAddress, "");
-			_context.Response.Cookies.Append(Consts.ConstCookieStatus, "0");
-			return View("../Account/LoginForm");
+		public IActionResult Show (WebModel model) {
+			Student student = _dbContext.GetStudentById(model.Id);
+			BlockChain blockChain = student.Subjects[model.Subject];
+			model.Student=student;
+			model.BlockChain = blockChain;
+			return View(model);
 		}
 	}
 }

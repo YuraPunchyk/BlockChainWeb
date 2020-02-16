@@ -1,0 +1,25 @@
+﻿@model WebModel
+@{
+    ViewData["Title"] = "Show";
+}
+
+<h1>Show</h1>
+
+<table class='show-subject' border="px">
+    <tr><th>Index</th><th>PerviousHash</th><th>Hash</th><th>Date</th><th>Amount</th><th>Description</th><th>Teacher</th></tr>
+    @foreach(var chain in Model.BlockChain.Chain) {
+        <tr>
+            <th>@chain.Index </th>
+            <th>  @chain.PreviousHash </th>
+            <th>  @chain.Hash </th>
+            <th>
+                @chain.TimeStamp
+            </th>
+            <th>@chain.Valuation.Amount</th>
+            <th>
+                @chain.Valuation.Description
+            </th>
+            <th>  @chain.Valuation.Teacher.FullName  </th>
+        </tr>
+    }
+</table>

@@ -1,52 +1,26 @@
-﻿@model Student
+﻿@model WebModel
 @{
     ViewData["Title"] = "Student";
 }
-
-
-<div class="navbar-nav">
-    <div class=" nav-item">
-        <select class="student_select" id="subject">
-            @foreach(var subject in Model.Subjects) {
-                <option id="@subject.Subject">@subject.Subject</option>
-            }
-        </select>
-    </div>
-    <div class=" nav-item">
-        <button class="student_button" value="Show" onclick="Show();" />
-    </div>
-    <div class="show" id="show">
-        <div id="student-model-show">
-
-        </div>
-    </div>
+<div>
+    <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Logout">Logout</a>
 </div>
 
-<div class="tab-content">
 
-    <script type="text/javascript">
-        var show = document.getElementById("show");
-        var table = document.getElementById("student-model-show");
-        var subjects = @Model.Subjects;
-    </script>
-    <script type="text/javascript">
-        function Show() {
-            show.innerHTML = "";
-            var select = document.getElementById("subject");
-            var nameSubject = select.options[select.selectedIndex].value;
-            var strHtml = "<h1 class='subject-name'>" + nameSubject + "</h1>";
-            strHtml = "<table class='show-subject'>";
-            strHtml += "<tr><th>Index</th><th>PerviousHash</th><th>Hash</th><th>Date</th><th>Amount</th><th>Description</th><th>Teacher</th></tr>";
-            for (var model in @Model.Subjects) {
-                if (model.Subject == nameSubject) {
-                    for (var value in model.Chain) {
-                        strHtml += "<tr><th>" + value.Index + "</th><th>" + value.PerviousHash + "</th><th>" + value.Hash + "</th><th>" + value.Date + "</th><th>" + value.Valuation.Amount + "</th><th>" + value.Valuation.Description + "</th><th>" + value.Valuation.Teacher.FullName + "</th></tr>";
-                    }
-                    strHtml += "</table>";
+<div class="form ">
+    <form method="post" asp-controller="Student" asp-action="Show">
+
+        <div class="inputBox">
+            <label asp-for="Subject"></label>
+            <select asp-for="Subject">
+                @foreach(var item in Model.Student.Subjects.Values) {
+                    <option>@item.Subject</option>
                 }
-            }
-            show.innerHTML = strHtml;
-        }
-        
-    </script>
+            </select>
+        </div>
+        <div class="inputBox">
+            <input type="submit" value="Show valuation" />
+        </div>
+        <input asp-for="Id" value="@Model.Student.Id" type="hidden" />
+    </form>
 </div>

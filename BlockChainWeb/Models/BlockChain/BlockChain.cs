@@ -1,8 +1,7 @@
-﻿using MongoDB.Bson.Serialization.Attributes;
+﻿using BlockChainWeb.Models.Person;
+using MongoDB.Bson.Serialization.Attributes;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace BlockChainWeb.Models {
 	public class BlockChain {
@@ -26,7 +25,9 @@ namespace BlockChainWeb.Models {
 		}
 
 		public Block CreateGenesisBlock () {
-			Block block = new Block(DateTime.Now, null, null);
+			Teacher teacher = new Teacher("","",null,"","","");
+			Valuation valuation = new Valuation(teacher, 0,"");
+			Block block = new Block(DateTime.Now, null, valuation);
 			return block;
 		}
 
@@ -43,6 +44,7 @@ namespace BlockChainWeb.Models {
 			Block latestBlock = GetLatestBlock();
 			block.Index = latestBlock.Index + 1;
 			block.PreviousHash = latestBlock.Hash;
+			block.Hash = block.CalculateHash();
 			Chain.Add(block);
 		}
 

@@ -1,4 +1,5 @@
-﻿using BlockChainWeb.Models.HellperClasses;
+﻿using BlockChainWeb.Models.Education;
+using BlockChainWeb.Models.HellperClasses;
 using System.Collections.Generic;
 
 namespace BlockChainWeb.Models.Person {
@@ -6,10 +7,10 @@ namespace BlockChainWeb.Models.Person {
 		#region Variables
 		public string Faculty { get; set; }
 		public string Cathedra { get; set; }
-		public List<string> Subjects { get; set; }
+		public List<Subject> Subjects { get; set; }
 		#endregion
 
-		public Teacher ( string fullname, string faculty, List<string> subjects, string cathedra,
+		public Teacher ( string fullname, string faculty, List<Subject> subjects, string cathedra,
 			string id,
 			string email ) : base(id, email, fullname, Role.Teacher) {
 			Cathedra = cathedra;

@@ -1,11 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using BlockChainWeb.DbContexts;
 using BlockChainWeb.Models;
-using BlockChainWeb.Models.HellperClasses;
 using BlockChainWeb.Models.Person;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
+using System.Linq;
+using BlockChainWeb.Models.Education;
 
 namespace BlockChainWeb.Controllers {
 	public class TeacherController : Controller {
@@ -23,6 +25,10 @@ namespace BlockChainWeb.Controllers {
 		}
 
 		public IActionResult SetValuation ( WebModel model ) {
+			List<Student> students = _dbContext.GetStudentsByGroup(model.Group);
+			List<Group> groups = _dbContext.GetGroups();
+			model.Students = students;
+			model.Groups = groups;
 			return View(model);
 		}
 
@@ -30,23 +36,33 @@ namespace BlockChainWeb.Controllers {
 			Teacher teacher = _dbContext.GetTeacherById(model.Id);
 			Valuation valuation = new Valuation(teacher, model.Amount, model.Description);
 			Block block = new Block(DateTime.Now, null, valuation);
+			string subjectName = model.Subject;
 			foreach(string id in model.StudentIds) {
 				Student student = _dbContext.GetStudentById(id);
-				foreach(var subject in student.Subjects) {
-					if(subject.Subject == model.Subject) {
-						subject.AddBlock(block);
-						_dbContext.UpdateStudent(student);
+				if(student.Subjects.Count > 0) {
+					foreach(var subject in student.Subjects.Values) {
+						if(subject.Subject == subjectName) {
+							student.Subjects[subjectName].AddBlock(block);
+							_dbContext.UpdateStudent(student);
+						} else {
+							BlockChain blockChain = new BlockChain(subjectName);
+							blockChain.AddBlock(block);
+							student.Subjects.Add(subjectName, blockChain);
+							_dbContext.UpdateStudent(student);
+						}
 					}
+				} else {
+					BlockChain blockChain = new BlockChain(subjectName);
+					blockChain.AddBlock(block);
+					student.Subjects.Add(subjectName, blockChain);
+					_dbContext.UpdateStudent(student);
 				}
 			}
-			return View("SetValuation");
-		}
-
-		public IActionResult Logout () {
-			_context.Response.Cookies.Append(Consts.ConstCookieUser, "");
-			_context.Response.Cookies.Append(Consts.ConstCookieIpAddress, "");
-			_context.Response.Cookies.Append(Consts.ConstCookieStatus, "0");
-			return View("../Account/LoginForm");
+			List<Student> students = _dbContext.GetStudentsByGroup(model.Group);
+			List<Group> groups = _dbContext.GetGroups();
+			model.Students = students;
+			model.Groups = groups;
+			return View("../Teacher/SetValuation", model);
 		}
 	}
 }

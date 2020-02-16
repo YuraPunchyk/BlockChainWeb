@@ -1,4 +1,5 @@
-﻿
+﻿using MongoDB.Bson.Serialization.Attributes;
+
 namespace BlockChainWeb.Models.Person {
 	public class User {
 

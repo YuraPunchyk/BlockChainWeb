@@ -7,6 +7,8 @@ using BlockChainWeb.Models.HellperClasses;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using System.Collections.Generic;
 using BlockChainWeb.Models;
+using BlockChainWeb.Models.Education;
+using System.Linq;
 
 namespace BlockChainWeb.Controllers {
 	public class AccountController : Controller {
@@ -88,14 +90,17 @@ namespace BlockChainWeb.Controllers {
 						_context.Response.Cookies.Append(Consts.ConstCookieStatus, "2");
 						_context.Response.Cookies.Append(Consts.ConstCookieUser, user.Id);
 						var student = _dbContext.GetStudentById(user.Id);
+						WebModel model = new WebModel {
+							Student = student
+						};
 						if(student != null) {
-							return View("../Student/Index", student);
+							return View("../Student/Index", model);
 						} else {
 							return BadRequest();
 						}
 					} else {
 						if(user.IsTeacher) {
-							_context.Response.Cookies.Append(Consts.ConstCookieStatus, "2");
+							_context.Response.Cookies.Append(Consts.ConstCookieStatus, "3");
 							_context.Response.Cookies.Append(Consts.ConstCookieUser, user.Id);
 							WebModel model = GetTeacherModel(user.Id);
 							if(model != null) {
@@ -113,23 +118,35 @@ namespace BlockChainWeb.Controllers {
 
 		[HttpPost]
 		public IActionResult RegisterTeacher ( RegisterTeacherViewModel model ) {
-			Teacher teacher = new Teacher(model.FullName, model.Faculty, model.Subjects, model.Cathedra, model.Id, model.Email);
+			Login login = new Login(model.Id, model.Password, false, true, false, "");
+			List<Subject> subjects = _dbContext.GetSubjects().Select(x =>x).Where(x=> model.SubjectsId.Contains(x.Id)).ToList();
+			Teacher teacher = new Teacher(model.FullName, model.Faculty, subjects, model.Cathedra, model.Id, model.Email);
 			_dbContext.SetTeacher(teacher);
-			return RedirectToAction("Admin", "Admin");
+			_dbContext.SetLogin(login);
+			return View("../Admin/RegisteredSuccessful");
 		}
 
 		[HttpPost]
 		public IActionResult RegisterStudent ( RegisterStudentViewModel model ) {
-			List<BlockChain> subjects = new List<BlockChain>();
+			Login login = new Login(model.Id,model.Password,true,false,false,"");
+			Dictionary<string,BlockChain> subjects = new Dictionary<string, BlockChain>();
 			Student student = new Student(model.FullName, model.Faculty, model.Cathedra, model.Course, model.Group, model.Id, model.Email, subjects);
 			_dbContext.SetStudent(student);
-			return RedirectToAction("Admin", "Admin");
+			_dbContext.SetLogin(login);
+			return View("../Admin/RegisteredSuccessful");
+		}
+
+		public IActionResult Logout () {
+			_context.Response.Cookies.Append(Consts.ConstCookieUser, "");
+			_context.Response.Cookies.Append(Consts.ConstCookieIpAddress, "");
+			_context.Response.Cookies.Append(Consts.ConstCookieStatus, "0");
+			return View("../Account/LoginForm");
 		}
 
 		#region Helper Methods
 		public WebModel GetTeacherModel ( string id ) {
 			Teacher teacher = _dbContext.GetTeacherById(id);
-			List<int> groups = _dbContext.GetGroups();
+			List<Group> groups = _dbContext.GetGroups();
 			if(teacher != null && groups.Count > 0) {
 				return new WebModel {
 					Id = teacher.Id,

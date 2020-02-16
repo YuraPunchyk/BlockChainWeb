@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using BlockChainWeb.Models.Education;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace BlockChainWeb.ViewModels {
@@ -22,6 +23,7 @@ namespace BlockChainWeb.ViewModels {
 
 		[Required, MaxLength(200)]
 		public string Cathedra { get; set; }
-		public List<string> Subjects { get; set; }
+		public List<Subject> Subjects { get; set; }
+		public List<int> SubjectsId { get; set; }
 	}
 }

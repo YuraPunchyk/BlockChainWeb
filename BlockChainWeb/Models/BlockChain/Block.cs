@@ -18,7 +18,6 @@ namespace BlockChainWeb.Models {
 			TimeStamp = timeStamp;
 			PreviousHash = previousHash;
 			Valuation = valuation;
-			;
 		}
 
 		public string CalculateHash () {

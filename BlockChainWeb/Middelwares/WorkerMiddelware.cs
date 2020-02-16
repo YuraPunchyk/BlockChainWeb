@@ -1,4 +1,6 @@
-﻿using BlockChainWeb.Models.HellperClasses;
+﻿using BlockChainWeb.DbContexts;
+using BlockChainWeb.Models.Education;
+using BlockChainWeb.Models.HellperClasses;
 using Microsoft.AspNetCore.Http;
 
 using System.Threading.Tasks;
@@ -13,47 +15,48 @@ namespace BlockChainWeb.Middelwares {
 		private const string admin = "Admin";
 		#endregion
 
-		public WorkerMiddelware ( RequestDelegate next ) {
+		private DbContext _dbContexts;
+		public WorkerMiddelware ( RequestDelegate next, AppConfiguration appConfiguration ) {
 			_next = next;
+			_dbContexts = new DbContext(appConfiguration.Dbsetting.Connection);
 		}
 
 		public async Task InvokeAsync ( HttpContext context ) {
 			var status = context.Request.Cookies[Consts.ConstCookieStatus];
 			var url = context.Request.Path.ToString();
-			if(!string.IsNullOrEmpty(status) && status != "0") {
-				if(status == "1") {
-					if(url.Contains(admin)) {
-						await _next.Invoke(context);
-					} else {
-						context.Request.Path = "/Access/Index";
-						await _next.Invoke(context);
-					}
-				} else {
-					if(status == "2") {
-						if(url.Contains(teacher)) {
-							await _next.Invoke(context);
-						} else {
-							context.Request.Path = "/Access/Index";
-							await _next.Invoke(context);
-						}
-					} else {
-						if(status == "3") {
-							if(url.Contains(student)) {
-								await _next.Invoke(context);
+			if(url == "/") {
+				context.Request.Path = "/Account/Authentication";
+			} else {
+				if(status != "1") {
+					if(url != "/Account/Logout") {
+						if(!string.IsNullOrEmpty(status) && status != "0") {
+							if(status == "1") {
+								if(!url.Contains(admin)) {
+									context.Request.Path = "/Access/Index";
+								}
 							} else {
-								context.Request.Path = "/Access/Index";
-								await _next.Invoke(context);
+								if(status == "2") {
+									if(!url.Contains(student)) {
+										context.Request.Path = "/Access/Index";
+									}
+								} else {
+									if(status == "3") {
+										if(!url.Contains(teacher)) {
+											context.Request.Path = "/Access/Index";
+										}
+									}
+								}
 							}
+						} else {
+							if(url != "/Account/Login") {
+								context.Request.Path = "/Account/Authentication";
+							}
+
 						}
 					}
 				}
-				context.Request.Path = "/Account/Authentication";
-				await _next.Invoke(context);
-			} else {
-				context.Request.Path = "/Account/Authentication";
-				await _next.Invoke(context);
 			}
-
+			await _next.Invoke(context);
 		}
 	}
 }

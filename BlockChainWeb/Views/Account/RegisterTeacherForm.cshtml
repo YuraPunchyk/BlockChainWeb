@@ -2,7 +2,9 @@
 @{
     ViewData["Title"] = "Register Teacher";
 }
-
+    <div>
+        <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Logout">Logout</a>
+    </div>
 <div class="form">
     <h2>Register Teacher</h2>
 
@@ -52,9 +54,9 @@
 
             <div class="inputBox">
                 <label asp-for="Subjects"></label>
-                <select asp-for="Subjects">
+                <select asp-for="SubjectsId" multiple = "multiple">
                     @foreach(var item in Model.Subjects) {
-                        <option>@item</option>
+                        <option value="@item.Id">@item.Name</option>
                     }
                 </select>
             </div>

@@ -1,4 +1,5 @@
-﻿using BlockChainWeb.Models.Person;
+﻿using BlockChainWeb.Models.Education;
+using BlockChainWeb.Models.Person;
 using System.Collections.Generic;
 
 
@@ -6,12 +7,15 @@ namespace BlockChainWeb.Models {
 	public class WebModel {
 		public string Id { get; set; }
 		public string Role { get; set; } = "";
-
+		#region Studen
+		public Student Student { get; set; }
+		public BlockChain BlockChain { get; set; }
+		#endregion
 		#region Techer
-		public List<int> Groups { get; set; } = null;
+		public List<Group> Groups { get; set; } = null;
 		public string Subject { get; set; } = "";
-		public int Group { get; set; } = -1;
-		public List<string> Subjects { get; set; }
+		public int Group { get; set; } 
+		public List<Subject> Subjects { get; set; }
 		#endregion
 
 		#region Set Valuation

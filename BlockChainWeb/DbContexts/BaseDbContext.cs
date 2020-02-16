@@ -1,4 +1,5 @@
-﻿using BlockChainWeb.Models.Person;
+﻿using BlockChainWeb.Models.Education;
+using BlockChainWeb.Models.Person;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
@@ -45,18 +46,24 @@ namespace BlockChainWeb.DbContexts {
 			var database = _client.GetDatabase(EnumName.DataBase.DbName);
 			var collection = database.GetCollection<Login>(EnumName.Collection.LoginsCollection);
 			var data = Builders<Login>.Update.Set(x => x, login);
-			collection.UpdateOne(filter, data);
+			collection.UpdateOneAsync(filter, data).Wait();
 		}
 		public void SetUser ( Login login ) {
 			var database = _client.GetDatabase(EnumName.DataBase.DbName);
 			var collection = database.GetCollection<Login>(EnumName.Collection.LoginsCollection);
-			collection.InsertOne(login);
+			collection.InsertOneAsync(login).Wait();
 		}
 
-		public void SetGroup ( int group ) {
+		public void SetGroup ( Group group ) {
 			var database = _client.GetDatabase(EnumName.DataBase.DbName);
-			var collection = database.GetCollection<int>(EnumName.Collection.GroupCollection);
-			collection.InsertOne(group);
+			var collection = database.GetCollection<Group>(EnumName.Collection.GroupCollection);
+			collection.InsertOneAsync(group).Wait();
+		}
+
+		public void SetSubject (Subject subject) {
+			var database = _client.GetDatabase(EnumName.DataBase.DbName);
+			var collection = database.GetCollection<Subject>(EnumName.Collection.SubjectCollection);
+			collection.InsertOneAsync(subject).Wait();
 		}
 
 		public List<Student> GetStudentsByGroup ( int group ) {
@@ -110,40 +117,46 @@ namespace BlockChainWeb.DbContexts {
 			return null;
 		}
 
-		public List<int> GetGroups () {
-			FilterDefinition<int> filter = Builders<int>.Filter.Empty;
+		public List<Group> GetGroups () {
+			FilterDefinition<Group> filter = Builders<Group>.Filter.Empty;
 			var database = _client.GetDatabase(EnumName.DataBase.DbName);
-			var collection = database.GetCollection<int>(EnumName.Collection.GroupCollection);
-			List<int> groups = collection.Find(filter).ToList();
+			var collection = database.GetCollection<Group>(EnumName.Collection.GroupCollection);
+			List<Group> groups = collection.Find(filter).ToList();
 			return groups;
 		}
 
 		public void SetStudent ( Student student ) {
 			var databasse = _client.GetDatabase(EnumName.DataBase.DbName);
 			var collection = databasse.GetCollection<Student>(EnumName.Collection.StudentCollection);
-			collection.InsertOne(student);
+			collection.InsertOneAsync(student).Wait();
 		}
 
 		public void SetTeacher ( Teacher teacher ) {
 			var databasse = _client.GetDatabase(EnumName.DataBase.DbName);
 			var collection = databasse.GetCollection<Teacher>(EnumName.Collection.TeacherCollection);
-			collection.InsertOne(teacher);
+			collection.InsertOneAsync(teacher).Wait();
 		}
 
 		public void UpdateStudent ( Student student ) {
 			var filter = Builders<Student>.Filter.Eq(x => x.Id, student.Id);
 			var database = _client.GetDatabase(EnumName.DataBase.DbName);
 			var collection = database.GetCollection<Student>(EnumName.Collection.StudentCollection);
-			var data = Builders<Student>.Update.Set(x => x, student);
-			collection.UpdateOne(filter, data);
+			var data = Builders<Student>.Update.Set("Subjects", student.Subjects);
+			collection.UpdateOneAsync(filter, data).Wait();
 		}
 
-		public List<string> GetSubjects () {
-			FilterDefinition<string> filter = Builders<string>.Filter.Empty;
+		public List<Subject> GetSubjects () {
+			FilterDefinition<Subject> filter = Builders<Subject>.Filter.Empty;
 			var database = _client.GetDatabase(EnumName.DataBase.DbName);
-			var collection = database.GetCollection<string>(EnumName.Collection.SubjectCollection);
-			List<string> subjects = collection.Find(filter).ToList();
+			var collection = database.GetCollection<Subject>(EnumName.Collection.SubjectCollection);
+			List<Subject> subjects = collection.Find(filter).ToList();
 			return subjects;
+		}
+
+		public void SetLogin (Login login) {
+			var databasse = _client.GetDatabase(EnumName.DataBase.DbName);
+			var collection = databasse.GetCollection<Login>(EnumName.Collection.LoginsCollection);
+			collection.InsertOneAsync(login).Wait();
 		}
 	}
 }

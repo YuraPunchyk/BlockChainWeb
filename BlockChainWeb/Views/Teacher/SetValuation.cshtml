@@ -1,7 +1,11 @@
 ﻿@model WebModel
 @{
     ViewData["Title"] = "SetValuation";
+    ViewBag.Model = Model;
 }
+    <div>
+        <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Logout">Logout</a>
+    </div>
 
 <h1>Set valuation</h1>
 
@@ -17,23 +21,22 @@
             <label asp-for="StudentIds"></label>
             <select asp-for="StudentIds" multiple>
                 @foreach(var item in Model.Students) {
-                    <option id="@item.Id">@item.FullName</option>
+                    <option value="@item.Id">@item.FullName</option>
                 }
             </select>
         </div>
 
         <div class="inputBox">
             <label asp-for="Amount"></label>
-            <input asp-for="Amount"/>
+            <input asp-for="Amount" />
         </div>
 
         <div class="inputBox">
             <input type="submit" value="Set valuation" />
         </div>
-
+        <input asp-for="Id" value="@Model.Id" type="hidden" />
+        <input asp-for="Role" value="@Model.Role" type="hidden">
+        <input asp-for="Group" value="@Model.Group" type="hidden">
+        <input asp-for="Subject" value="@Model.Subject" type="hidden">
     </form>
 </div>
-<input asp-for="Id"  value="@Model.Id" hidden/>
-<input asp-for="Role" value="@Model.Role" hidden>
-<input asp-for="Subjects" value="@Model.Subjects" hidden>
-<input asp-for="Groups" value="@Model.Groups" hidden>
