@@ -215,4 +215,6 @@ select {
 .show-subject th{
     width: 125px;
     height:25px;
+    margin: 2px 2px 2px 2px;
+    padding: 2px 2px 2px 2px;
 }
