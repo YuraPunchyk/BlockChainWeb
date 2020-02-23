@@ -45,7 +45,8 @@ namespace BlockChainWeb.Controllers {
 							if(login.IsStudent) {
 								var student = _dbContext.GetStudentById(login.Id);
 								if(student != null) {
-									return View("../Student/Index", student);
+									WebModel model = new WebModel { Id = student.Id, Student = student };
+									return View("../Student/Index", model);
 								} else {
 									return BadRequest();
 								}
@@ -119,7 +120,7 @@ namespace BlockChainWeb.Controllers {
 		[HttpPost]
 		public IActionResult RegisterTeacher ( RegisterTeacherViewModel model ) {
 			Login login = new Login(model.Id, model.Password, false, true, false, "");
-			List<Subject> subjects = _dbContext.GetSubjects().Select(x =>x).Where(x=> model.SubjectsId.Contains(x.Id)).ToList();
+			List<Subject> subjects = _dbContext.GetSubjects().Select(x => x).Where(x => model.SubjectsId.Contains(x.Id)).ToList();
 			Teacher teacher = new Teacher(model.FullName, model.Faculty, subjects, model.Cathedra, model.Id, model.Email);
 			_dbContext.SetTeacher(teacher);
 			_dbContext.SetLogin(login);
@@ -128,8 +129,8 @@ namespace BlockChainWeb.Controllers {
 
 		[HttpPost]
 		public IActionResult RegisterStudent ( RegisterStudentViewModel model ) {
-			Login login = new Login(model.Id,model.Password,true,false,false,"");
-			Dictionary<string,BlockChain> subjects = new Dictionary<string, BlockChain>();
+			Login login = new Login(model.Id, model.Password, true, false, false, "");
+			Dictionary<string, BlockChain> subjects = new Dictionary<string, BlockChain>();
 			Student student = new Student(model.FullName, model.Faculty, model.Cathedra, model.Course, model.Group, model.Id, model.Email, subjects);
 			_dbContext.SetStudent(student);
 			_dbContext.SetLogin(login);

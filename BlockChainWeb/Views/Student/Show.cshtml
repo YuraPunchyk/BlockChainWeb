@@ -3,9 +3,12 @@
     ViewData["Title"] = "Show";
 }
 
+    <div class="header">
+        <a class="btn draw-border" asp-area="" asp-controller="Account" asp-action="Logout">Logout</a>
+    </div>
 <h1>Show</h1>
 
-<table class='show-subject' border="px">
+<table class="show-subject" border="1">
     <tr><th>Index</th><th>PerviousHash</th><th>Hash</th><th>Date</th><th>Amount</th><th>Description</th><th>Teacher</th></tr>
     @foreach(var chain in Model.BlockChain.Chain) {
         <tr>

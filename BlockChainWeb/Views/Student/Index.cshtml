@@ -2,25 +2,26 @@
 @{
     ViewData["Title"] = "Student";
 }
-<div>
-    <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Logout">Logout</a>
+<div class="header">
+    <a class="btn draw-border" asp-area="" asp-controller="Account" asp-action="Logout">Logout</a>
 </div>
 
 
 <div class="form ">
     <form method="post" asp-controller="Student" asp-action="Show">
-
-        <div class="inputBox">
-            <label asp-for="Subject"></label>
-            <select asp-for="Subject">
-                @foreach(var item in Model.Student.Subjects.Values) {
-                    <option>@item.Subject</option>
-                }
-            </select>
+        <div class="input">
+            <div class="inputBox">
+                <label asp-for="Subject"></label>
+                <select asp-for="Subject">
+                    @foreach(var item in Model.Student.Subjects.Values) {
+                        <option>@item.Subject</option>
+                    }
+                </select>
+            </div>
+            <div class="inputBox">
+                <input type="submit" value="Show valuation" />
+            </div>
+            <input asp-for="Id" value="@Model.Student.Id" type="hidden" />
         </div>
-        <div class="inputBox">
-            <input type="submit" value="Show valuation" />
-        </div>
-        <input asp-for="Id" value="@Model.Student.Id" type="hidden" />
     </form>
 </div>
