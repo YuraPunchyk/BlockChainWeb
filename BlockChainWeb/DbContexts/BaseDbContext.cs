@@ -152,6 +152,13 @@ namespace BlockChainWeb.DbContexts {
 			List<Subject> subjects = collection.Find(filter).ToList();
 			return subjects;
 		}
+		public Subject GetSubjectByName (string name) {
+			var filter = Builders<Subject>.Filter.Eq(x => x.Name, name);
+			var database = _client.GetDatabase(EnumName.DataBase.DbName);
+			var collection = database.GetCollection<Subject>(EnumName.Collection.SubjectCollection);
+			var subjects = collection.Find(filter).ToList();
+			return subjects[0];
+		}
 
 		public void SetLogin (Login login) {
 			var databasse = _client.GetDatabase(EnumName.DataBase.DbName);

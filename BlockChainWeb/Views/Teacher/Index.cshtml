@@ -32,10 +32,14 @@
                 <div class="inputBox">
                     <input type="submit" class="button blue" value="Set valuation" />
                 </div>
+                <div class="inputBox">
+                    <input type="submit"  asp-controller="Teacher" asp-action="ShowValuation" class="button blue" value="Show valuation" />
+                </div>
                 <input asp-for="Id" value="@Model.Id" type="hidden" />
                 <input asp-for="Role" value="@Model.Role" type="hidden">
                 <input asp-for="Subjects" value="@Model.Subjects" type="hidden">
                 <input asp-for="Groups" value="@Model.Groups" type="hidden">
             </div>
         </form>
-    </div>
+ 
+        </div>

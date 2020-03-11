@@ -1,7 +1,6 @@
 ﻿@model WebModel
 @{
     ViewData["Title"] = "SetValuation";
-    ViewBag.Model = Model;
 }
 <div class="header">
     <a class="btn draw-border" asp-area="" asp-controller="Account" asp-action="Logout">Logout</a>
@@ -15,7 +14,15 @@
         <div class="input">
             <div class="inputBox">
                 <label asp-for="Description"></label>
-                <input asp-for="Description" type="text" />
+                <select asp-for="Description" >
+                    @foreach(var sub in Model.Subjects) {
+                        if(sub.Name == Model.Subject) {
+                            foreach(var task in sub.TaskSubjects) {
+                                <option  value="@task.Name">@task.Name</option>
+                            }
+                        }
+                    }
+                </select>
             </div>
 
             <div class="inputBox">

@@ -27,8 +27,18 @@ namespace BlockChainWeb.Controllers {
 		public IActionResult SetValuation ( WebModel model ) {
 			List<Student> students = _dbContext.GetStudentsByGroup(model.Group);
 			List<Group> groups = _dbContext.GetGroups();
+			Teacher teacher = _dbContext.GetTeacherById(model.Id);
+			model.Subjects = teacher.Subjects;
 			model.Students = students;
 			model.Groups = groups;
+			return View(model);
+		}
+
+		public IActionResult ShowValuation(WebModel model ) {
+			List<Student> students = _dbContext.GetStudentsByGroup(model.Group);
+			Subject subject = _dbContext.GetSubjectByName(model.Subject);
+			model.SubjectModel = subject;
+			model.Students = students;
 			return View(model);
 		}
 
@@ -61,6 +71,7 @@ namespace BlockChainWeb.Controllers {
 			List<Student> students = _dbContext.GetStudentsByGroup(model.Group);
 			List<Group> groups = _dbContext.GetGroups();
 			model.Students = students;
+			model.Subjects = teacher.Subjects;
 			model.Groups = groups;
 			return View("../Teacher/SetValuation", model);
 		}

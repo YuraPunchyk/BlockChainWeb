@@ -16,6 +16,7 @@ namespace BlockChainWeb.Models {
 		public string Subject { get; set; } = "";
 		public int Group { get; set; } 
 		public List<Subject> Subjects { get; set; }
+		public Subject SubjectModel { get; set; }
 		#endregion
 
 		#region Set Valuation
