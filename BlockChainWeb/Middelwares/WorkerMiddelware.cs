@@ -32,17 +32,17 @@ namespace BlockChainWeb.Middelwares {
 						if(!string.IsNullOrEmpty(status) && status != "0") {
 							if(status == "1") {
 								if(!url.Contains(admin)) {
-									context.Request.Path = "/Access/Index";
+									context.Request.Path = "/Account/Authentication";
 								}
 							} else {
 								if(status == "2") {
 									if(!url.Contains(student)) {
-										context.Request.Path = "/Access/Index";
+										context.Request.Path = "/Account/Authentication";
 									}
 								} else {
 									if(status == "3") {
 										if(!url.Contains(teacher)) {
-											context.Request.Path = "/Access/Index";
+											context.Request.Path = "/Account/Authentication";
 										}
 									}
 								}
@@ -51,7 +51,6 @@ namespace BlockChainWeb.Middelwares {
 							if(url != "/Account/Login") {
 								context.Request.Path = "/Account/Authentication";
 							}
-
 						}
 					}
 				}

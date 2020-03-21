@@ -24,12 +24,18 @@ namespace BlockChainWeb.Controllers {
 			return View(model);
 		}
 
-		public IActionResult Show (WebModel model) {
+		public IActionResult Show ( WebModel model ) {
 			Student student = _dbContext.GetStudentById(model.Id);
 			BlockChain blockChain = student.Subjects[model.Subject];
-			model.Student=student;
+			model.Student = student;
 			model.BlockChain = blockChain;
 			return View(model);
+		}
+
+		[HttpGet]
+		
+		public ActionResult BrowserGoToBack () {
+			return View("../Account/Authentication");
 		}
 	}
 }

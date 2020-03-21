@@ -75,5 +75,10 @@ namespace BlockChainWeb.Controllers {
 			model.Groups = groups;
 			return View("../Teacher/SetValuation", model);
 		}
+
+		[HttpGet]
+		public ActionResult BrowserGoToBack () {
+			return View("../Account/Authentication");
+		}
 	}
 }

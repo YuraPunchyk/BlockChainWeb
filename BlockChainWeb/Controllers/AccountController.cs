@@ -25,46 +25,39 @@ namespace BlockChainWeb.Controllers {
 			_accessor = accessor;
 			_appConfiguration = appConfiguration;
 		}
-		[Route("/Account/LoginForm")]
 		public IActionResult LoginForm () {
 			return View();
 		}
 
 		public IActionResult Authentication () {
 			string userId = _context.Request.Cookies[Consts.ConstCookieUser];
-			string userIpAdress = _context.Request.Cookies[Consts.ConstCookieIpAddress];
-			_context.Response.Cookies.Append(Consts.ConstCookieIpAddress, _context.Connection.RemoteIpAddress.ToString());
-
-			if(!string.IsNullOrWhiteSpace(userIpAdress)) {
-				if(!string.IsNullOrWhiteSpace(userId)) {
-					Login login = _dbContext.GetLoginById(userId);
-					if(login != null) {
-						if(login.IsAdmin) {
-							return View("../Admin/Index");
+			if(!string.IsNullOrWhiteSpace(userId)) {
+				Login login = _dbContext.GetLoginById(userId);
+				if(login != null) {
+					if(login.IsAdmin) {
+						return View("../Admin/Index");
+					} else {
+						if(login.IsStudent) {
+							var student = _dbContext.GetStudentById(login.Id);
+							if(student != null) {
+								WebModel model = new WebModel { Id = student.Id, Student = student };
+								return View("../Student/Index", model);
+							} else {
+								return BadRequest();
+							}
 						} else {
-							if(login.IsStudent) {
-								var student = _dbContext.GetStudentById(login.Id);
-								if(student != null) {
-									WebModel model = new WebModel { Id = student.Id, Student = student };
-									return View("../Student/Index", model);
+							if(login.IsTeacher) {
+								WebModel model = GetTeacherModel(login.Id);
+								if(model != null) {
+									return View("../Teacher/Index", model);
 								} else {
 									return BadRequest();
-								}
-							} else {
-								if(login.IsTeacher) {
-									WebModel model = GetTeacherModel(login.Id);
-									if(model != null) {
-										return View("../Teacher/Index", model);
-									} else {
-										return BadRequest();
-									}
 								}
 							}
 						}
 					}
 				}
 			}
-
 			return View("LoginForm");
 		}
 
