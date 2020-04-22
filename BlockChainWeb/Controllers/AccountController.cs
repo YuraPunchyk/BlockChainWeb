@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using BlockChainWeb.Models;
 using BlockChainWeb.Models.Education;
 using System.Linq;
+using System;
 
 namespace BlockChainWeb.Controllers {
 	public class AccountController : Controller {
@@ -29,36 +30,39 @@ namespace BlockChainWeb.Controllers {
 			return View();
 		}
 
-		public IActionResult Authentication () {
+		public RedirectToRouteResult Authentication () {
 			string userId = _context.Request.Cookies[Consts.ConstCookieUser];
 			if(!string.IsNullOrWhiteSpace(userId)) {
 				Login login = _dbContext.GetLoginById(userId);
 				if(login != null) {
 					if(login.IsAdmin) {
-						return View("../Admin/Index");
+						return RedirectToRoute(new {
+							controller = "Admin",
+							action = "Index"
+						});
 					} else {
 						if(login.IsStudent) {
-							var student = _dbContext.GetStudentById(login.Id);
-							if(student != null) {
-								WebModel model = new WebModel { Id = student.Id, Student = student };
-								return View("../Student/Index", model);
-							} else {
-								return BadRequest();
-							}
+							_dbContext.SetSesion(new Sesion() {Guid = new Guid(), IdUer = login.Id });
+							return RedirectToRoute(new {
+								controller = "Student",
+								action = "Index"
+							});
 						} else {
 							if(login.IsTeacher) {
-								WebModel model = GetTeacherModel(login.Id);
-								if(model != null) {
-									return View("../Teacher/Index", model);
-								} else {
-									return BadRequest();
-								}
+								_dbContext.SetSesion(new Sesion() { Guid = new Guid(), IdUer = login.Id });
+								return RedirectToRoute(new {
+									controller = "Teacher",
+									action = "Index"
+								});
 							}
 						}
 					}
 				}
 			}
-			return View("LoginForm");
+			return RedirectToRoute(new {
+				controller = "Account",
+				action = "LoginForm"
+			});
 		}
 
 		public IActionResult RegisterStudentForm () {
@@ -72,85 +76,80 @@ namespace BlockChainWeb.Controllers {
 		}
 
 		[HttpPost]
-		public IActionResult Login ( LoginViewModel loginViewModel ) {
+		public RedirectToRouteResult Login ( LoginViewModel loginViewModel ) {
 			var user = _dbContext.Authentication(loginViewModel.Id, loginViewModel.Password);
 			if(user != null) {
 				if(user.IsAdmin) {
 					_context.Response.Cookies.Append(Consts.ConstCookieStatus, "1");
 					_context.Response.Cookies.Append(Consts.ConstCookieUser, user.Id);
-					return View("../Admin/Index");
+					return RedirectToRoute(new {
+						controller = "Admin",
+						action = "Index"
+					});
 				} else {
 					if(user.IsStudent) {
 						_context.Response.Cookies.Append(Consts.ConstCookieStatus, "2");
 						_context.Response.Cookies.Append(Consts.ConstCookieUser, user.Id);
 						var student = _dbContext.GetStudentById(user.Id);
-						WebModel model = new WebModel {
-							Student = student
-						};
-						if(student != null) {
-							return View("../Student/Index", model);
-						} else {
-							return BadRequest();
-						}
+						_dbContext.SetSesion(new Sesion() { Guid = new Guid(), IdUer = user.Id });
+						return RedirectToRoute(new {
+							controller = "Student",
+							action = "Index"
+						});
 					} else {
 						if(user.IsTeacher) {
 							_context.Response.Cookies.Append(Consts.ConstCookieStatus, "3");
 							_context.Response.Cookies.Append(Consts.ConstCookieUser, user.Id);
-							WebModel model = GetTeacherModel(user.Id);
-							if(model != null) {
-								return View("../Teacher/Index", model);
-							} else {
-								return BadRequest();
-							}
-
+							_dbContext.SetSesion(new Sesion() { Guid = new Guid(), IdUer = user.Id });
+							return RedirectToRoute(new {
+								controller = "Teacher",
+								action = "Index"
+							});
 						}
 					}
 				}
 			}
-			return View("NotRegister");
+			return RedirectToRoute(new {
+				controller = "Account",
+				action = "NotRegister"
+			});
 		}
 
 		[HttpPost]
-		public IActionResult RegisterTeacher ( RegisterTeacherViewModel model ) {
+		public RedirectToRouteResult RegisterTeacher ( RegisterTeacherViewModel model ) {
 			Login login = new Login(model.Id, model.Password, false, true, false, "");
 			List<Subject> subjects = _dbContext.GetSubjects().Select(x => x).Where(x => model.SubjectsId.Contains(x.Id)).ToList();
 			Teacher teacher = new Teacher(model.FullName, model.Faculty, subjects, model.Cathedra, model.Id, model.Email);
 			_dbContext.SetTeacher(teacher);
 			_dbContext.SetLogin(login);
-			return View("../Admin/RegisteredSuccessful");
+			return RedirectToRoute(new {
+				controller = "Admin",
+				action = "RegisteredSuccessful"
+			});
 		}
 
 		[HttpPost]
-		public IActionResult RegisterStudent ( RegisterStudentViewModel model ) {
+		public RedirectToRouteResult RegisterStudent ( RegisterStudentViewModel model ) {
 			Login login = new Login(model.Id, model.Password, true, false, false, "");
 			Dictionary<string, BlockChain> subjects = new Dictionary<string, BlockChain>();
 			Student student = new Student(model.FullName, model.Faculty, model.Cathedra, model.Course, model.Group, model.Id, model.Email, subjects);
 			_dbContext.SetStudent(student);
 			_dbContext.SetLogin(login);
-			return View("../Admin/RegisteredSuccessful");
+			return RedirectToRoute(new {
+				controller = "Admin",
+				action = "RegisteredSuccessful"
+			});
 		}
 
-		public IActionResult Logout () {
+		public RedirectToRouteResult Logout () {
 			_context.Response.Cookies.Append(Consts.ConstCookieUser, "");
 			_context.Response.Cookies.Append(Consts.ConstCookieIpAddress, "");
 			_context.Response.Cookies.Append(Consts.ConstCookieStatus, "0");
-			return View("../Account/LoginForm");
+			_dbContext.DeleteSesions();
+			return RedirectToRoute(new {
+				controller = "Account",
+				action = "LoginForm"
+			});
 		}
-
-		#region Helper Methods
-		public WebModel GetTeacherModel ( string id ) {
-			Teacher teacher = _dbContext.GetTeacherById(id);
-			List<Group> groups = _dbContext.GetGroups();
-			if(teacher != null && groups.Count > 0) {
-				return new WebModel {
-					Id = teacher.Id,
-					Role = Role.Teacher,
-					Groups = groups,
-					Subjects = teacher.Subjects
-				};
-			}
-			return null;
-		}
-		#endregion
 	}
 }

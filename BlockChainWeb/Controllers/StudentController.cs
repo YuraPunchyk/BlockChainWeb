@@ -18,9 +18,9 @@ namespace BlockChainWeb.Controllers {
 			_context = accessor.ActionContext.HttpContext;
 		}
 
-		public IActionResult Index ( WebModel model ) {
-			Student student = _dbContext.GetStudentById(model.Id);
-			model.Student = student;
+		public IActionResult Index () {
+			Student student = _dbContext.GetStudentById(_dbContext.GetSesion().IdUer);
+			WebModel model = new WebModel { Id = student.Id, Student = student };
 			return View(model);
 		}
 
@@ -30,12 +30,6 @@ namespace BlockChainWeb.Controllers {
 			model.Student = student;
 			model.BlockChain = blockChain;
 			return View(model);
-		}
-
-		[HttpGet]
-		
-		public ActionResult BrowserGoToBack () {
-			return View("../Account/Authentication");
 		}
 	}
 }

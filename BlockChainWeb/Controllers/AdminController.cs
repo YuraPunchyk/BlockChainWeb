@@ -13,7 +13,7 @@ namespace BlockChainWeb.Controllers {
 			_context = accessor.ActionContext.HttpContext;
 		}
 
-		public ActionResult Index ( Login login ) {
+		public ActionResult Index () {
 			return View();
 		}
 

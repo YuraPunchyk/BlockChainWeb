@@ -1,4 +1,5 @@
-﻿using BlockChainWeb.Models.Education;
+﻿using BlockChainWeb.Models;
+using BlockChainWeb.Models.Education;
 using BlockChainWeb.Models.Person;
 using MongoDB.Driver;
 using System;
@@ -164,6 +165,27 @@ namespace BlockChainWeb.DbContexts {
 			var databasse = _client.GetDatabase(EnumName.DataBase.DbName);
 			var collection = databasse.GetCollection<Login>(EnumName.Collection.LoginsCollection);
 			collection.InsertOneAsync(login).Wait();
+		}
+
+		public void SetSesion(Sesion sesion ) {
+			var databasse = _client.GetDatabase(EnumName.DataBase.DbName);
+			var collection = databasse.GetCollection<Sesion>(EnumName.Collection.SesionCollection);
+			collection.InsertOneAsync(sesion).Wait();
+		}
+
+		public Sesion GetSesion () {
+			FilterDefinition<Sesion> filter = Builders<Sesion>.Filter.Empty;
+			var database = _client.GetDatabase(EnumName.DataBase.DbName);
+			var collection = database.GetCollection<Sesion>(EnumName.Collection.SesionCollection);
+			List<Sesion> sesion = collection.Find(filter).ToList();
+			return sesion[sesion.Count-1];
+		}
+
+		public void DeleteSesions () {
+			FilterDefinition<Sesion> filter = Builders<Sesion>.Filter.Empty;
+			var database = _client.GetDatabase(EnumName.DataBase.DbName);
+			var collection = database.GetCollection<Sesion>(EnumName.Collection.SesionCollection);
+			collection.DeleteManyAsync(filter);
 		}
 	}
 }

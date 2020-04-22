@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using System.Linq;
 using BlockChainWeb.Models.Education;
+using BlockChainWeb.Models.HellperClasses;
 
 namespace BlockChainWeb.Controllers {
 	public class TeacherController : Controller {
@@ -20,7 +21,8 @@ namespace BlockChainWeb.Controllers {
 			_context = accessor.ActionContext.HttpContext;
 			_dbContext = new DbContext(appConfiguration.Dbsetting.Connection);
 		}
-		public IActionResult Index ( WebModel model ) {
+		public IActionResult Index () {
+			WebModel model = GetTeacherModel(_dbContext.GetSesion().IdUer);
 			return View(model);
 		}
 
@@ -73,12 +75,26 @@ namespace BlockChainWeb.Controllers {
 			model.Students = students;
 			model.Subjects = teacher.Subjects;
 			model.Groups = groups;
-			return View("../Teacher/SetValuation", model);
+			return RedirectToRoute(new {
+				controller = "Teacher",
+				action = "Index"
+			});
 		}
 
-		[HttpGet]
-		public ActionResult BrowserGoToBack () {
-			return View("../Account/Authentication");
+		#region Helper Methods
+		public WebModel GetTeacherModel ( string id ) {
+			Teacher teacher = _dbContext.GetTeacherById(id);
+			List<Group> groups = _dbContext.GetGroups();
+			if(teacher != null && groups.Count > 0) {
+				return new WebModel {
+					Id = teacher.Id,
+					Role = Role.Teacher,
+					Groups = groups,
+					Subjects = teacher.Subjects
+				};
+			}
+			return null;
 		}
+		#endregion
 	}
 }

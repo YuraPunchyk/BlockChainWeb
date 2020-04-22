@@ -8,6 +8,7 @@ namespace BlockChainWeb.DbContexts {
 			public static string LoginsCollection = "Logins";
 			public static string GroupCollection = "Groups";
 			public static string SubjectCollection = "Subjects";
+			public static string SesionCollection = "Sesion";
 		}
 
 		public static class DataBase {

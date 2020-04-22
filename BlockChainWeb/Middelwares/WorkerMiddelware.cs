@@ -2,6 +2,7 @@
 using BlockChainWeb.Models.Education;
 using BlockChainWeb.Models.HellperClasses;
 using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -48,14 +49,18 @@ namespace BlockChainWeb.Middelwares {
 								}
 							}
 						} else {
-							if(url != "/Account/Login") {
+							if(url != "/Account/Login" && url!="/Account/LoginForm") {
 								context.Request.Path = "/Account/Authentication";
 							}
 						}
 					}
 				}
 			}
-			await _next.Invoke(context);
+			try {
+				await _next.Invoke(context);
+			} catch (Exception ex){
+				context.Request.Path = "/Account/Logout";
+			}
 		}
 	}
 }
